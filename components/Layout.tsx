@@ -36,7 +36,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   const childArticles = articles.filter(a => a.category_id === category.id);
   const isChildArticleActive = childArticles.some(art => currentPath === `/article/${art.id}`);
 
-  const [isOpen, setIsOpen] = useState(depth === 0 || isChildArticleActive);
+  const [isOpen, setIsOpen] = useState(false);
   const childCategories = allCategories.filter(c => c.parent_id === category.id);
   const hasChildren = childCategories.length > 0 || childArticles.length > 0;
 
@@ -84,7 +84,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           <span className={cn(
             depth === 0 ? "font-medium text-sm" : "text-sm ml-6",
             "group-hover:text-foreground transition-colors truncate",
-            isCategoryActive ? "text-foreground font-semibold" : (depth !== 0 ? "text-muted-foreground" : "text-foreground")
+            isCategoryActive ? "text-foreground font-semibold" : "text-muted-foreground"
           )}>
             {category.name}
           </span>
@@ -218,45 +218,48 @@ export const Layout: React.FC<LayoutProps> = ({ children, isAdmin, onAdminLogin,
           </div>
         </div>
 
+        <div className="px-4 mb-3 space-y-1">
+          <Link
+            to="/"
+            className={cn(
+              "flex items-center px-3 py-2 rounded-md text-sm transition-colors",
+              location.pathname === '/'
+                ? "bg-white dark:bg-accent shadow-sm font-medium text-primary border border-border/50"
+                : "text-muted-foreground hover:bg-accent hover:text-foreground"
+            )}
+          >
+            <LayoutGrid size={16} className="mr-3" />
+            Domů
+          </Link>
+          <Link
+            to="/nastroje/podpis"
+            className={cn(
+              "flex items-center px-3 py-2 rounded-md text-sm transition-colors",
+              isToolsSection
+                ? "bg-white dark:bg-accent shadow-sm font-medium text-primary border border-border/50"
+                : "text-muted-foreground hover:bg-accent hover:text-foreground"
+            )}
+          >
+            <Settings size={16} className="mr-3" />
+            Generátor podpisu
+          </Link>
+        </div>
+
         <div className="flex-1 overflow-y-auto py-2 custom-scrollbar">
-          <div className="px-4 mb-3 space-y-1">
-            <Link
-              to="/"
-              className={cn(
-                "flex items-center px-3 py-2 rounded-md text-sm transition-colors",
-                location.pathname === '/'
-                  ? "bg-white dark:bg-accent shadow-sm font-medium text-primary border border-border/50"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
-              )}
-            >
-              <LayoutGrid size={16} className="mr-3" />
-              Domů
-            </Link>
-            <Link
-              to="/nastroje/podpis"
-              className={cn(
-                "flex items-center px-3 py-2 rounded-md text-sm transition-colors",
-                isToolsSection
-                  ? "bg-white dark:bg-accent shadow-sm font-medium text-primary border border-border/50"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
-              )}
-            >
-              <Settings size={16} className="mr-3" />
-              Generátor podpisu
-            </Link>
+          <div>
+            <div className="px-5 mb-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider mt-2">
+              Kategorie
+            </div>
+            {rootCategories.map(cat => (
+              <SidebarItem 
+                key={cat.id} 
+                category={cat} 
+                allCategories={categories} 
+                articles={articles}
+                currentPath={location.pathname}
+              />
+            ))}
           </div>
-          <div className="px-5 mb-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider mt-2">
-            Kategorie
-          </div>
-          {rootCategories.map(cat => (
-            <SidebarItem 
-              key={cat.id} 
-              category={cat} 
-              allCategories={categories} 
-              articles={articles}
-              currentPath={location.pathname}
-            />
-          ))}
 
           {isAdmin && (
             <div className="mt-8 px-4">

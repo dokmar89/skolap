@@ -15,17 +15,26 @@ import { api } from './services/api';
 import { isConfigured } from './lib/supabase';
 import { Article, Category } from './types';
 import { Loader2 } from 'lucide-react';
+import { endAdminSession, hasValidAdminSession, startAdminSession } from './lib/adminAuth';
 
 export default function App() {
-  const [isAdmin, setIsAdmin] = useState(false); // Nový stav pro admin mód
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => hasValidAdminSession());
   const [articles, setArticles] = useState<Article[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Funkce pro "přihlášení" admina
   const handleAdminLogin = () => {
+    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+
+    if (!adminPassword) {
+      alert('Admin heslo není nastavené. Doplňte VITE_ADMIN_PASSWORD do .env.local');
+      return;
+    }
+
     const pass = prompt('Zadejte heslo pro admin režim:');
-    if (pass === 'admin') {
+    if (pass === adminPassword) {
+      startAdminSession();
       setIsAdmin(true);
       alert('Admin režim aktivován.');
     } else if (pass) {
@@ -34,6 +43,7 @@ export default function App() {
   };
   
   const handleAdminLogout = () => {
+      endAdminSession();
       setIsAdmin(false);
   }
 

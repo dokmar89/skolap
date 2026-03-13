@@ -3,7 +3,9 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Article, Category } from '../types';
 import { api } from '../services/api';
 import { Button, Input, Card, CardContent, CardHeader, CardTitle } from '../components/ui';
+import { RichTextEditor } from '../components/RichTextEditor';
 import { Save, ChevronLeft, Loader2, Plus, AlertTriangle } from 'lucide-react';
+import { sanitizeArticleHtml } from '../lib/html';
 
 export const AdminEditor: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -72,7 +74,7 @@ export const AdminEditor: React.FC = () => {
     try {
         await api.saveArticle({
             title,
-            content,
+            content: sanitizeArticleHtml(content),
             category_id: categoryId
         }, isNew ? undefined : id);
         
@@ -159,17 +161,17 @@ export const AdminEditor: React.FC = () => {
                 </div>
 
                 <div className="space-y-2">
-                <label className="text-sm font-medium leading-none">Obsah (HTML)</label>
-                <div className="relative">
-                    <textarea
-                        required
-                        rows={15}
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-mono"
-                        placeholder="<p>Text článku...</p>"
-                    />
-                </div>
+                  <label className="text-sm font-medium leading-none">Obsah článku</label>
+                  <RichTextEditor
+                    value={content}
+                    onChange={setContent}
+                    onUploadImage={api.uploadArticleImage}
+                    placeholder="Sem napište obsah článku..."
+                    minHeight={420}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Editor podporuje nadpisy, barvy, zvýraznění, seznamy, rámečky, tabulky, odkazy a obrázky (tlačítko, drag&drop i vložení přes Ctrl+V).
+                  </p>
                 </div>
 
                 <div className="flex justify-end pt-4 border-t">

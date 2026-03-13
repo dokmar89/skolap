@@ -17,16 +17,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ isAdmin, articles, categor
   const navigate = useNavigate();
   const recentArticles = articles.slice(0, 5);
   
-  const handleLinkClick = (e: React.MouseEvent, titlePart: string) => {
+  const getCategoryByNames = (names: string[]) => {
+    const normalized = names.map((name) => name.toLowerCase());
+    return categories.find((cat) => normalized.includes(cat.name.toLowerCase()));
+  };
+
+  const handleLinkClick = (e: React.MouseEvent, categoryNames: string[], fallbackTitle: string) => {
     e.preventDefault();
-    const art = articles.find(a => a.title.toLowerCase().includes(titlePart.toLowerCase()));
+    const category = getCategoryByNames(categoryNames);
     
-    if (art) {
-        navigate(`/article/${art.id}`);
+    if (category) {
+        navigate(`/category/${category.id}`);
     } else if (isAdmin) {
-        navigate(`/admin/new?title=${encodeURIComponent(titlePart + ' - návod')}`);
+        navigate(`/admin/new?title=${encodeURIComponent(fallbackTitle + ' - návod')}`);
     } else {
-        alert('Tento návod zatím nebyl vytvořen.');
+        alert('Tato kategorie zatím není dostupná.');
     }
   };
 
@@ -99,13 +104,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ isAdmin, articles, categor
             </Card>
 
             {[
-                { name: 'Daktela', icon: Phone, color: 'bg-green-500', text: 'Základní nastavení pro příjem hovorů a sluchátka.' },
-                { name: 'Tiskárny', icon: Printer, color: 'bg-purple-500', text: 'Návod na instalaci síťové tiskárny na pobočce.' },
-                { name: 'Windows', icon: Monitor, color: 'bg-blue-500', text: 'Jak zprovoznit Windows aplikace na vašem Macu.' }
+                { name: 'Daktela', icon: Phone, color: 'bg-green-500', text: 'Základní nastavení pro příjem hovorů a sluchátka.', categoryNames: ['Daktela'] },
+                { name: 'Tiskárny', icon: Printer, color: 'bg-purple-500', text: 'Návod na instalaci síťové tiskárny na pobočce.', categoryNames: ['Tiskárny'] },
+                { name: 'Windows', icon: Monitor, color: 'bg-blue-500', text: 'Jak zprovoznit Windows aplikace na vašem Macu.', categoryNames: ['Windows', 'MacOS'] }
             ].map(item => {
-                const hasArticle = articles.find(a => a.title.toLowerCase().includes(item.name.toLowerCase()));
+                const hasCategory = getCategoryByNames(item.categoryNames);
                 return (
-                    <Card key={item.name} onClick={(e) => handleLinkClick(e, item.name)} className="p-8 hover:shadow-2xl hover:-translate-y-1 transition-all border-0 bg-white dark:bg-card shadow-lg flex flex-col h-full cursor-pointer group">
+                    <Card key={item.name} onClick={(e) => handleLinkClick(e, item.categoryNames, item.name)} className="p-8 hover:shadow-2xl hover:-translate-y-1 transition-all border-0 bg-white dark:bg-card shadow-lg flex flex-col h-full cursor-pointer group">
                         <div className={`w-14 h-14 ${item.color}/10 rounded-2xl flex items-center justify-center text-${item.color.split('-')[1]}-600 mb-6 group-hover:${item.color} group-hover:text-white transition-colors`}>
                             <item.icon size={28} />
                         </div>
@@ -114,7 +119,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ isAdmin, articles, categor
                             {item.text}
                         </p>
                         <Button variant="ghost" className="w-full justify-between pl-0 font-bold group-hover:text-primary">
-                            {hasArticle ? 'Zobrazit návod' : (isAdmin ? 'Vytvořit nyní' : 'Nedostupné')} <ArrowRight size={18} />
+                            {hasCategory ? 'Otevřít kategorii' : (isAdmin ? 'Vytvořit nyní' : 'Nedostupné')} <ArrowRight size={18} />
                         </Button>
                     </Card>
                 )

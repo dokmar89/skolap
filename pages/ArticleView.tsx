@@ -4,6 +4,7 @@ import { Article } from '../types';
 import { api } from '../services/api';
 import { Button, Badge } from '../components/ui';
 import { Edit2, Clock, Calendar, ChevronLeft, Trash2, Loader2, AlertCircle, Printer } from 'lucide-react';
+import { sanitizeArticleHtml } from '../lib/html';
 
 interface ArticleViewProps {
   isAdmin: boolean;
@@ -135,7 +136,7 @@ export const ArticleView: React.FC<ArticleViewProps> = ({ isAdmin }) => {
           {/* Content Body */}
           <div
             className="w-full"
-            dangerouslySetInnerHTML={{ __html: article.content }}
+            dangerouslySetInnerHTML={{ __html: sanitizeArticleHtml(article.content) }}
           />
       </article>
     </div>

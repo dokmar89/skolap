@@ -89,5 +89,42 @@ export const api = {
     
     const { error } = await sb.from('articles').delete().eq('id', id);
     if (error) throw new Error(error.message);
-  }
+  },
+
+  async uploadArticleImage(file: File): Promise<string> {
+    const sb = getSupabase();
+    if (!sb) throw new Error("No connection");
+
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const filePath = `articles/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${safeName}`;
+    const bucket = 'article-images';
+
+    const performUpload = async () =>
+      sb.storage.from(bucket).upload(filePath, file, {
+        upsert: false,
+        cacheControl: '3600',
+        contentType: file.type || 'application/octet-stream',
+      });
+
+    let { error: uploadError } = await performUpload();
+
+    if (uploadError && uploadError.message.toLowerCase().includes('bucket')) {
+      await sb.storage.createBucket(bucket, {
+        public: true,
+        fileSizeLimit: '5MB',
+      });
+      ({ error: uploadError } = await performUpload());
+    }
+
+    if (uploadError) {
+      throw new Error(uploadError.message);
+    }
+
+    const { data } = sb.storage.from(bucket).getPublicUrl(filePath);
+    if (!data.publicUrl) {
+      throw new Error('Nepodařilo se získat veřejnou URL obrázku.');
+    }
+
+    return data.publicUrl;
+  },
 };

@@ -123,6 +123,22 @@
       .prose p { @apply leading-7 [&:not(:first-child)]:mt-6 text-muted-foreground; }
       .prose a { @apply font-medium text-primary underline underline-offset-4; }
       .prose ul { @apply my-6 ml-6 list-disc [&>li]:mt-2; }
+      .prose ol { @apply my-6 ml-6 list-decimal [&>li]:mt-2; }
+      .prose blockquote { @apply my-6 border-l-4 border-primary/40 pl-4 italic text-foreground/80; }
+      .prose pre { @apply my-6 rounded-lg bg-slate-900 text-slate-100 p-4 overflow-x-auto text-sm; }
+      .prose hr { @apply my-8 border-border; }
+      .prose table { @apply my-6 w-full border-collapse text-sm; }
+      .prose th { @apply border border-border bg-slate-100 dark:bg-slate-800 p-2 text-left font-semibold; }
+      .prose td { @apply border border-border p-2 align-top; }
+      .prose figure { @apply my-6; }
+      .prose figcaption { @apply text-xs text-muted-foreground mt-2; }
+
+      .rich-editor:empty::before {
+        content: attr(data-placeholder);
+        color: hsl(var(--muted-foreground));
+        opacity: 0.8;
+        pointer-events: none;
+      }
     </style>
     
     <script type="importmap">
