@@ -704,7 +704,7 @@ ${signatureHtml}
 
   return (
     <div className={embedded ? "" : "min-h-screen bg-background p-4 md:p-8"}>
-      <div className="mx-auto max-w-7xl">
+      <div className="w-full">
         {/* Header */}
         {!embedded && (
           <div className="mb-8 text-center">

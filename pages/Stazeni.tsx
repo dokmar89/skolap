@@ -1,30 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowRight, FileText, PenTool } from 'lucide-react';
 import { Article } from '../types';
-import { Card, Button } from '../components/ui';
-import { PenTool, FileText, ArrowRight } from 'lucide-react';
+import { Button, Card } from '../components/ui';
 
 interface StazeniProps {
   articles: Article[];
 }
 
-export const Stazeni: React.FC<StazeniProps> = ({ articles }) => {
+export const Stazeni: React.FC<StazeniProps> = ({ articles: _articles }) => {
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div>
+    <div className="w-full space-y-8">
+      <div className="rounded-[2rem] border border-border/60 bg-white/70 p-8 shadow-sm dark:bg-card/70">
         <h1 className="text-3xl font-bold tracking-tight">Ke stažení</h1>
-        <p className="text-muted-foreground mt-2">
-          Nástroje a soubory připravené ke stažení.
-        </p>
+        <p className="mt-2 max-w-2xl text-muted-foreground">Nástroje a soubory připravené ke stažení.</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="p-6 hover:shadow-lg transition-shadow">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+      <div className="grid gap-6 md:grid-cols-2 xl:max-w-5xl">
+        <Card className="rounded-3xl p-6 transition-shadow hover:shadow-lg">
+          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
             <PenTool size={24} className="text-primary" />
           </div>
-          <h3 className="font-bold text-lg mb-2">E-mailový podpis</h3>
-          <p className="text-sm text-muted-foreground mb-4">
+          <h3 className="mb-2 text-lg font-bold">E-mailový podpis</h3>
+          <p className="mb-4 text-sm text-muted-foreground">
             Vytvořte si firemní podpis a stáhněte ho jako HTML soubor nebo použijte kopírování do schránky.
           </p>
           <Link to="/tools/generator">
@@ -34,12 +32,12 @@ export const Stazeni: React.FC<StazeniProps> = ({ articles }) => {
           </Link>
         </Card>
 
-        <Card className="p-6 hover:shadow-lg transition-shadow">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+        <Card className="rounded-3xl p-6 transition-shadow hover:shadow-lg">
+          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
             <FileText size={24} className="text-primary" />
           </div>
-          <h3 className="font-bold text-lg mb-2">Export do PDF</h3>
-          <p className="text-sm text-muted-foreground mb-4">
+          <h3 className="mb-2 text-lg font-bold">Export do PDF</h3>
+          <p className="mb-4 text-sm text-muted-foreground">
             Stáhněte si návody ze znalostní báze ve formátu PDF pro offline použití.
           </p>
           <Link to="/tools/pdf">

@@ -366,7 +366,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, isAdmin, onAdminLogin,
         </header>
 
         <main className="flex-1 overflow-y-auto p-6 lg:p-10">
-          <div className="max-w-6xl mx-auto animate-fade-in">
+          <div className="w-full animate-fade-in">
             {children}
           </div>
         </main>

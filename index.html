@@ -116,22 +116,141 @@
         --ring: 220 70% 38%;
       }
 
-      /* Prose Overrides for Shadcn look */
-      .prose { max-width: 100%; }
-      .prose h1 { @apply text-3xl font-bold tracking-tight mb-4 text-foreground; }
-      .prose h2 { @apply text-2xl font-semibold tracking-tight mt-8 mb-4 text-foreground; }
-      .prose p { @apply leading-7 [&:not(:first-child)]:mt-6 text-muted-foreground; }
-      .prose a { @apply font-medium text-primary underline underline-offset-4; }
-      .prose ul { @apply my-6 ml-6 list-disc [&>li]:mt-2; }
-      .prose ol { @apply my-6 ml-6 list-decimal [&>li]:mt-2; }
-      .prose blockquote { @apply my-6 border-l-4 border-primary/40 pl-4 italic text-foreground/80; }
-      .prose pre { @apply my-6 rounded-lg bg-slate-900 text-slate-100 p-4 overflow-x-auto text-sm; }
-      .prose hr { @apply my-8 border-border; }
-      .prose table { @apply my-6 w-full border-collapse text-sm; }
-      .prose th { @apply border border-border bg-slate-100 dark:bg-slate-800 p-2 text-left font-semibold; }
-      .prose td { @apply border border-border p-2 align-top; }
-      .prose figure { @apply my-6; }
-      .prose figcaption { @apply text-xs text-muted-foreground mt-2; }
+      .prose,
+      .article-content {
+        max-width: 100%;
+        color: hsl(var(--foreground));
+      }
+
+      .prose h1,
+      .article-content h1 {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        margin: 0 0 1rem;
+        color: hsl(var(--foreground));
+      }
+
+      .prose h2,
+      .article-content h2 {
+        font-size: 1.5rem;
+        line-height: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        margin: 2rem 0 1rem;
+        color: hsl(var(--foreground));
+      }
+
+      .prose h3,
+      .article-content h3 {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        font-weight: 700;
+        margin: 1.5rem 0 0.75rem;
+        color: hsl(var(--foreground));
+      }
+
+      .prose p,
+      .article-content p {
+        margin: 1rem 0;
+        line-height: 1.8;
+        color: hsl(var(--muted-foreground));
+      }
+
+      .prose a,
+      .article-content a {
+        color: hsl(var(--primary));
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        font-weight: 500;
+      }
+
+      .prose ul,
+      .article-content ul {
+        margin: 1.5rem 0 1.5rem 1.5rem;
+        list-style: disc;
+      }
+
+      .prose ol,
+      .article-content ol {
+        margin: 1.5rem 0 1.5rem 1.5rem;
+        list-style: decimal;
+      }
+
+      .prose li,
+      .article-content li {
+        margin-top: 0.5rem;
+        color: hsl(var(--muted-foreground));
+      }
+
+      .prose blockquote,
+      .article-content blockquote {
+        margin: 1.5rem 0;
+        padding-left: 1rem;
+        border-left: 4px solid hsl(var(--primary) / 0.4);
+        font-style: italic;
+        color: hsl(var(--foreground) / 0.8);
+      }
+
+      .prose pre,
+      .article-content pre {
+        margin: 1.5rem 0;
+        padding: 1rem;
+        overflow-x: auto;
+        border-radius: 0.75rem;
+        background: rgb(15 23 42);
+        color: rgb(241 245 249);
+        font-size: 0.875rem;
+      }
+
+      .prose hr,
+      .article-content hr {
+        margin: 2rem 0;
+        border: 0;
+        border-top: 1px solid hsl(var(--border));
+      }
+
+      .prose table,
+      .article-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        font-size: 0.875rem;
+      }
+
+      .prose th,
+      .article-content th {
+        padding: 0.5rem;
+        text-align: left;
+        font-weight: 600;
+        border: 1px solid hsl(var(--border));
+        background: rgb(241 245 249);
+      }
+
+      .prose td,
+      .article-content td {
+        padding: 0.5rem;
+        vertical-align: top;
+        border: 1px solid hsl(var(--border));
+      }
+
+      .dark .prose th,
+      .dark .article-content th {
+        background: rgb(30 41 59);
+      }
+
+      .prose figure,
+      .article-content figure {
+        margin: 1.5rem 0;
+      }
+
+      .prose figcaption,
+      .article-content figcaption {
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: hsl(var(--muted-foreground));
+      }
 
       .rich-editor:empty::before {
         content: attr(data-placeholder);

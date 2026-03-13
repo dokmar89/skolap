@@ -135,7 +135,7 @@ export const ArticleView: React.FC<ArticleViewProps> = ({ isAdmin }) => {
 
           {/* Content Body */}
           <div
-            className="w-full"
+            className="article-content w-full"
             dangerouslySetInnerHTML={{ __html: sanitizeArticleHtml(article.content) }}
           />
       </article>
